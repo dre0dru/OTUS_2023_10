@@ -27,7 +27,7 @@ namespace Character
 
         private void Shoot()
         {
-            if (_inputManager.IsFireInputPressed)
+            if (_inputManager.IsShootInputPressed)
             {
                 ShootBullet();
             }
@@ -36,7 +36,7 @@ namespace Character
         private void ShootBullet()
         {
             var weapon = _character.GetComponent<WeaponComponent>();
-            _bulletSystem.ShootBullet(new BulletSystem.Args
+            _bulletSystem.ShootBullet(new BulletArgs
             {
                 IsPlayer = true,
                 PhysicsLayer = (int)_bulletConfig.PhysicsLayer,

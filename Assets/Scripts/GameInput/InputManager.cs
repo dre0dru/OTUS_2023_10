@@ -4,12 +4,12 @@ namespace GameInput
 {
     public sealed class InputManager : MonoBehaviour
     {
-        public bool IsFireInputPressed { get; private set; }
+        public bool IsShootInputPressed { get; private set; }
         public float HorizontalInput { get; private set; }
 
         private void Update()
         {
-            IsFireInputPressed = Input.GetKeyDown(KeyCode.Space);
+            IsShootInputPressed = Input.GetKeyDown(KeyCode.Space);
 
             HorizontalInput = 0;
 

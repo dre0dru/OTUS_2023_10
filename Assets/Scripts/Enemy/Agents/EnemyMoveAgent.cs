@@ -5,39 +5,44 @@ namespace Enemy.Agents
 {
     public sealed class EnemyMoveAgent : MonoBehaviour
     {
-        public bool IsReached
-        {
-            get { return this.isReached; }
-        }
+        private const float StoppingDistance = 0.25f;
 
-        [SerializeField] private MoveComponent moveComponent;
+        [SerializeField]
+        private MoveComponent _moveComponent;
 
-        private Vector2 destination;
+        private Vector2 _destination;
 
-        private bool isReached;
+        private bool _isDestinationReached;
 
-        public void SetDestination(Vector2 endPoint)
-        {
-            this.destination = endPoint;
-            this.isReached = false;
-        }
+        public bool IsDestinationReached => _isDestinationReached;
 
         private void FixedUpdate()
         {
-            if (this.isReached)
+            if (_isDestinationReached)
             {
                 return;
             }
-            
-            var vector = this.destination - (Vector2) this.transform.position;
-            if (vector.magnitude <= 0.25f)
+
+            MoveToDestinationIfNotReached();
+        }
+
+        public void SetDestination(Vector2 endPoint)
+        {
+            _destination = endPoint;
+            _isDestinationReached = false;
+        }
+
+        private void MoveToDestinationIfNotReached()
+        {
+            var vector = _destination - (Vector2)transform.position;
+            if (vector.magnitude <= StoppingDistance)
             {
-                this.isReached = true;
+                _isDestinationReached = true;
                 return;
             }
 
             var direction = vector.normalized * Time.fixedDeltaTime;
-            this.moveComponent.MoveByRigidbodyVelocity(direction);
+            _moveComponent.MoveByRigidbodyVelocity(direction);
         }
     }
 }

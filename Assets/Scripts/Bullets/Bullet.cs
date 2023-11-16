@@ -20,6 +20,7 @@ namespace Bullets
 
         public int Damage => _damage;
 
+        //пока не стал выносить в отдельный класс, так как другой логики тут нет и негде переиспользовать коллизии
         private void OnCollisionEnter2D(Collision2D collision)
         {
             OnCollisionEntered?.Invoke(this, collision);

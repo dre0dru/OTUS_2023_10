@@ -4,18 +4,13 @@ using UnityEngine;
 
 namespace Bullets
 {
-    //хотел разделить на BulletSpawner и на BulletOutOfBoundsDestroyer, но вышло не очень, так как
-    //близкая связь между уничтожением и возвращением в пул. в общем пусть будет KISS
     public sealed class BulletSystem : MonoBehaviour
     {
         [SerializeField]
-        private BulletPool _bulletPool;
-
-        [SerializeField]
-        private Transform _worldTransform;
-
-        [SerializeField]
         private LevelBounds _levelBounds;
+
+        [SerializeField]
+        private BulletSpawner _bulletSpawner;
 
         private readonly HashSet<Bullet> _activeBullets = new();
         private readonly List<Bullet> _bulletsCache = new();
@@ -25,15 +20,9 @@ namespace Bullets
             CheckBulletsOutOfBounds();
         }
 
-        public void ShootBullet(Args args)
+        public void ShootBullet(BulletArgs args)
         {
-            var bullet = GetBullet()
-                .SetPosition(args.Position)
-                .SetColor(args.Color)
-                .SetPhysicsLayer(args.PhysicsLayer)
-                .SetDamage(args.Damage)
-                .SetIsPlayer(args.IsPlayer)
-                .SetVelocity(args.Velocity);
+            var bullet = _bulletSpawner.SpawnBullet(args);
 
             if (_activeBullets.Add(bullet))
             {
@@ -67,31 +56,8 @@ namespace Bullets
             if (_activeBullets.Remove(bullet))
             {
                 bullet.OnCollisionEntered -= OnBulletCollision;
-                ReleaseBullet(bullet);
+                _bulletSpawner.DespawnBullet(bullet);
             }
-        }
-
-        private Bullet GetBullet()
-        {
-            var bullet = _bulletPool.Get();
-            bullet.transform.SetParent(_worldTransform);
-
-            return bullet;
-        }
-
-        private void ReleaseBullet(Bullet bullet)
-        {
-            _bulletPool.Release(bullet);
-        }
-
-        public struct Args
-        {
-            public Vector2 Position;
-            public Vector2 Velocity;
-            public Color Color;
-            public int PhysicsLayer;
-            public int Damage;
-            public bool IsPlayer;
         }
     }
 }

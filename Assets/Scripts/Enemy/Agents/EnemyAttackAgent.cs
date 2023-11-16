@@ -5,53 +5,64 @@ namespace Enemy.Agents
 {
     public sealed class EnemyAttackAgent : MonoBehaviour
     {
-        public delegate void FireHandler(GameObject enemy, Vector2 position, Vector2 direction);
+        public delegate void ShootHandler(GameObject enemy, Vector2 position, Vector2 direction);
 
-        public event FireHandler OnFire;
+        public event ShootHandler OnShoot;
 
-        [SerializeField] private WeaponComponent weaponComponent;
-        [SerializeField] private EnemyMoveAgent moveAgent;
-        [SerializeField] private float countdown;
+        [SerializeField]
+        private WeaponComponent _weaponComponent;
 
-        private GameObject target;
-        private float currentTime;
+        [SerializeField]
+        private EnemyMoveAgent _moveAgent;
 
-        public void SetTarget(GameObject target)
-        {
-            this.target = target;
-        }
+        [SerializeField]
+        private float _countdown;
 
-        public void Reset()
-        {
-            this.currentTime = this.countdown;
-        }
+        private GameObject _target;
+        private float _currentTime;
 
         private void FixedUpdate()
         {
-            if (!this.moveAgent.IsReached)
-            {
-                return;
-            }
-            
-            if (!this.target.GetComponent<HitPointsComponent>().IsHitPointsExists())
+            if (!CanShoot())
             {
                 return;
             }
 
-            this.currentTime -= Time.fixedDeltaTime;
-            if (this.currentTime <= 0)
+            ShootByCountdown();
+        }
+
+        private void Reset()
+        {
+            _currentTime = _countdown;
+        }
+
+        public void SetTarget(GameObject target)
+        {
+            _target = target;
+        }
+
+        private bool CanShoot()
+        {
+            return _moveAgent.IsDestinationReached && 
+                   _target.GetComponent<HitPointsComponent>().IsHitPointsExists();
+        }
+
+        private void ShootByCountdown()
+        {
+            _currentTime -= Time.fixedDeltaTime;
+            if (_currentTime <= 0)
             {
-                this.Fire();
-                this.currentTime += this.countdown;
+                Shoot();
+                _currentTime += _countdown;
             }
         }
 
-        private void Fire()
+        private void Shoot()
         {
-            var startPosition = this.weaponComponent.Position;
-            var vector = (Vector2) this.target.transform.position - startPosition;
+            var startPosition = _weaponComponent.Position;
+            var vector = (Vector2)_target.transform.position - startPosition;
             var direction = vector.normalized;
-            this.OnFire?.Invoke(this.gameObject, startPosition, direction);
+            OnShoot?.Invoke(gameObject, startPosition, direction);
         }
     }
 }
