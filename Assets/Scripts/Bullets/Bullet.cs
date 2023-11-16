@@ -1,44 +1,64 @@
 using System;
 using UnityEngine;
 
-namespace ShootEmUp
+namespace Bullets
 {
     public sealed class Bullet : MonoBehaviour
     {
         public event Action<Bullet, Collision2D> OnCollisionEntered;
 
-        [NonSerialized] public bool isPlayer;
-        [NonSerialized] public int damage;
+        [SerializeField]
+        private Rigidbody2D _rigidbody;
 
         [SerializeField]
-        private new Rigidbody2D rigidbody2D;
+        private SpriteRenderer _spriteRenderer;
 
-        [SerializeField]
-        private SpriteRenderer spriteRenderer;
+        private bool _isPlayer;
+        private int _damage;
+
+        public bool IsPlayer => _isPlayer;
+
+        public int Damage => _damage;
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            this.OnCollisionEntered?.Invoke(this, collision);
+            OnCollisionEntered?.Invoke(this, collision);
         }
 
-        public void SetVelocity(Vector2 velocity)
+        public Bullet SetDamage(int damage)
         {
-            this.rigidbody2D.velocity = velocity;
+            _damage = damage;
+            return this;
         }
 
-        public void SetPhysicsLayer(int physicsLayer)
+        public Bullet SetIsPlayer(bool isPlayer)
         {
-            this.gameObject.layer = physicsLayer;
+            _isPlayer = isPlayer;
+            return this;
         }
 
-        public void SetPosition(Vector3 position)
+        public Bullet SetVelocity(Vector2 velocity)
         {
-            this.transform.position = position;
+            _rigidbody.velocity = velocity;
+            return this;
         }
 
-        public void SetColor(Color color)
+        public Bullet SetPhysicsLayer(int physicsLayer)
         {
-            this.spriteRenderer.color = color;
+            gameObject.layer = physicsLayer;
+            return this;
+        }
+
+        public Bullet SetPosition(Vector3 position)
+        {
+            transform.position = position;
+            return this;
+        }
+
+        public Bullet SetColor(Color color)
+        {
+            _spriteRenderer.color = color;
+            return this;
         }
     }
 }

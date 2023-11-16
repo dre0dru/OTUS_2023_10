@@ -1,0 +1,20 @@
+{
+    "name": "ShootEmUp.Character",
+    "rootNamespace": "",
+    "references": [
+        "GUID:c387060cfd4be9b42bc65ce157032478",
+        "GUID:441f541fc6afac34f92950ea70344d8e",
+        "GUID:9f0541eb85d41f24bac7c5ac6fa07e05",
+        "GUID:e216fba3ea230324d8ba0f9c2d8210ce",
+        "GUID:6e924f5048869ab4b8bc320dac30636a"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

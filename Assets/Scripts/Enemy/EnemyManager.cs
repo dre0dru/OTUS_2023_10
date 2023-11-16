@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using Bullets;
+using Components;
+using Enemy.Agents;
 using UnityEngine;
 
-namespace ShootEmUp
+namespace Enemy
 {
     public sealed class EnemyManager : MonoBehaviour
     {
@@ -11,6 +14,10 @@ namespace ShootEmUp
 
         [SerializeField]
         private BulletSystem _bulletSystem;
+        
+        [SerializeField]
+        private BulletConfig _bulletConfig;
+
         
         private readonly HashSet<GameObject> m_activeEnemies = new();
 
@@ -44,14 +51,14 @@ namespace ShootEmUp
 
         private void OnFire(GameObject enemy, Vector2 position, Vector2 direction)
         {
-            _bulletSystem.FlyBulletByArgs(new BulletSystem.Args
+            _bulletSystem.ShootBullet(new BulletSystem.Args
             {
-                isPlayer = false,
-                physicsLayer = (int) PhysicsLayer.ENEMY,
-                color = Color.red,
-                damage = 1,
-                position = position,
-                velocity = direction * 2.0f
+                IsPlayer = false,
+                PhysicsLayer = (int) _bulletConfig.PhysicsLayer,
+                Color = _bulletConfig.Color,
+                Damage = _bulletConfig.Damage,
+                Position = position,
+                Velocity = direction * _bulletConfig.Speed
             });
         }
     }

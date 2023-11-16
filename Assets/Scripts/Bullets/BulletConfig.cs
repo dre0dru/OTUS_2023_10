@@ -1,6 +1,7 @@
+using Common;
 using UnityEngine;
 
-namespace ShootEmUp
+namespace Bullets
 {
     [CreateAssetMenu(
         fileName = "BulletConfig",
@@ -9,15 +10,23 @@ namespace ShootEmUp
     public sealed class BulletConfig : ScriptableObject
     {
         [SerializeField]
-        public PhysicsLayer physicsLayer;
+        private PhysicsLayer _physicsLayer;
 
         [SerializeField]
-        public Color color;
+        private Color _color;
 
         [SerializeField]
-        public int damage;
+        private int _damage;
 
         [SerializeField]
-        public float speed;
+        private float _speed;
+
+        public PhysicsLayer PhysicsLayer => _physicsLayer;
+
+        public Color Color => _color;
+
+        public int Damage => _damage;
+
+        public float Speed => _speed;
     }
 }

@@ -1,0 +1,19 @@
+{
+    "name": "ShootEmUp.Enemy",
+    "rootNamespace": "",
+    "references": [
+        "GUID:95e95e4f11bf07c4b86ec1891ccb6b9d",
+        "GUID:e216fba3ea230324d8ba0f9c2d8210ce",
+        "GUID:441f541fc6afac34f92950ea70344d8e",
+        "GUID:c387060cfd4be9b42bc65ce157032478"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
