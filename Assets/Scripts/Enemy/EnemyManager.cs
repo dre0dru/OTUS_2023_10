@@ -35,20 +35,26 @@ namespace Enemy
 
         private IEnumerator SpawnEnemiesRoutine()
         {
+            //в идеале тут должна быть проверка на состояние игры, но у нас еще нет состояний
             while (true)
             {
                 yield return new WaitForSeconds(1);
 
                 if (_activeEnemies.Count < _maxSpawnedEnemies)
                 {
-                    var enemy = _enemySpawner.SpawnEnemy();
-
-                    if (_activeEnemies.Add(enemy))
-                    {
-                        enemy.GetComponent<HitPointsComponent>().HpEmpty += OnDestroyed;
-                        enemy.GetComponent<EnemyAttackAgent>().OnShoot += OnShoot;
-                    }
+                    SpawnEnemy();
                 }
+            }
+        }
+
+        private void SpawnEnemy()
+        {
+            var enemy = _enemySpawner.SpawnEnemy();
+
+            if (_activeEnemies.Add(enemy))
+            {
+                enemy.GetComponent<HitPointsComponent>().HpEmpty += OnDestroyed;
+                enemy.GetComponent<EnemyAttackAgent>().OnShoot += OnShoot;
             }
         }
 
@@ -63,7 +69,7 @@ namespace Enemy
             }
         }
 
-        private void OnShoot(GameObject enemy, Vector2 position, Vector2 direction)
+        private void OnShoot(Vector2 position, Vector2 direction)
         {
             _bulletSystem.ShootBullet(new BulletArgs
             {

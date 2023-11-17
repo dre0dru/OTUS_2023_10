@@ -5,7 +5,7 @@ namespace Enemy.Agents
 {
     public sealed class EnemyAttackAgent : MonoBehaviour
     {
-        public delegate void ShootHandler(GameObject enemy, Vector2 position, Vector2 direction);
+        public delegate void ShootHandler(Vector2 position, Vector2 direction);
 
         public event ShootHandler OnShoot;
 
@@ -62,7 +62,7 @@ namespace Enemy.Agents
             var startPosition = _weaponComponent.Position;
             var vector = (Vector2)_target.transform.position - startPosition;
             var direction = vector.normalized;
-            OnShoot?.Invoke(gameObject, startPosition, direction);
+            OnShoot?.Invoke(startPosition, direction);
         }
     }
 }
