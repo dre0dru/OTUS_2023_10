@@ -1,8 +1,7 @@
 ﻿using Components;
-using Game;
 using UnityEngine;
 
-namespace Character
+namespace Game
 {
     public class CharacterDeathObserver : MonoBehaviour
     {

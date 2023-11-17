@@ -2,13 +2,14 @@
 classDiagram
     direction LR
 
+    Game --> Components
+
     Enemy --> Pool
     Enemy --> Bullets
     Enemy --> Common
     Enemy --> Components
 
     Character --> Bullets
-    Character --> Game
     Character --> GameInput
     Character --> Common
     Character --> Components
