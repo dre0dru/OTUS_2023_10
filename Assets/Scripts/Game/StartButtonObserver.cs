@@ -26,7 +26,5 @@ namespace Game
             _startGameButton.gameObject.SetActive(false);
             _countdownGameStarter.StartCountdown();
         }
-
-        
     }
 }
