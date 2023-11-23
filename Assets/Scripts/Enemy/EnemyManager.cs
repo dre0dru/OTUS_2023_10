@@ -53,7 +53,7 @@ namespace Enemy
 
             if (_activeEnemies.Add(enemy))
             {
-                enemy.GetComponent<HitPointsComponent>().HpEmpty += OnDestroyed;
+                enemy.GetComponent<HitPointsComponent>().OnDeath += OnDestroyed;
                 enemy.GetComponent<EnemyAttackAgent>().OnShoot += OnShoot;
             }
         }
@@ -62,7 +62,7 @@ namespace Enemy
         {
             if (_activeEnemies.Remove(enemy))
             {
-                enemy.GetComponent<HitPointsComponent>().HpEmpty -= OnDestroyed;
+                enemy.GetComponent<HitPointsComponent>().OnDeath -= OnDestroyed;
                 enemy.GetComponent<EnemyAttackAgent>().OnShoot -= OnShoot;
 
                 _enemySpawner.DespawnEnemy(enemy);

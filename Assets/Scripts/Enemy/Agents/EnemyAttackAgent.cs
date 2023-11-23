@@ -1,3 +1,4 @@
+using System;
 using Components;
 using UnityEngine;
 
@@ -5,9 +6,7 @@ namespace Enemy.Agents
 {
     public sealed class EnemyAttackAgent : MonoBehaviour
     {
-        public delegate void ShootHandler(Vector2 position, Vector2 direction);
-
-        public event ShootHandler OnShoot;
+        public event Action<Vector2, Vector2> OnShoot;
 
         [SerializeField]
         private WeaponComponent _weaponComponent;
