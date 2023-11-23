@@ -1,20 +1,19 @@
 using System;
+using LifecycleEvents;
 using UnityEngine;
 
 namespace Bullets
 {
-    public sealed class Bullet : MonoBehaviour
+    public sealed class Bullet : MonoBehaviour, IFixedUpdateListener
     {
         public event Action<Bullet, Collision2D> OnCollisionEntered;
-
-        [SerializeField]
-        private Rigidbody2D _rigidbody;
 
         [SerializeField]
         private SpriteRenderer _spriteRenderer;
 
         private bool _isPlayer;
         private int _damage;
+        private Vector2 _velocity;
 
         public bool IsPlayer => _isPlayer;
 
@@ -24,6 +23,11 @@ namespace Bullets
         private void OnCollisionEnter2D(Collision2D collision)
         {
             OnCollisionEntered?.Invoke(this, collision);
+        }
+
+        void IFixedUpdateListener.OnFixedUpdate(float deltaTime)
+        {
+            transform.Translate(_velocity * deltaTime);
         }
 
         public Bullet SetDamage(int damage)
@@ -40,7 +44,7 @@ namespace Bullets
 
         public Bullet SetVelocity(Vector2 velocity)
         {
-            _rigidbody.velocity = velocity;
+            _velocity = velocity;
             return this;
         }
 

@@ -1,7 +1,10 @@
 {
     "name": "ShootEmUp.Game",
     "rootNamespace": "",
-    "references": ["GUID:e216fba3ea230324d8ba0f9c2d8210ce"],
+    "references": [
+        "GUID:e216fba3ea230324d8ba0f9c2d8210ce",
+        "GUID:65fee02a940123541a50f7a68c7e3694"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

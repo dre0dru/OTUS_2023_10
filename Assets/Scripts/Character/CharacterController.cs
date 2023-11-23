@@ -1,11 +1,12 @@
 using Bullets;
 using Components;
 using GameInput;
+using LifecycleEvents;
 using UnityEngine;
 
 namespace Character
 {
-    public sealed class CharacterController : MonoBehaviour
+    public sealed class CharacterController : MonoBehaviour, IUpdateListener
     {
         [SerializeField]
         private GameObject _character;
@@ -19,7 +20,7 @@ namespace Character
         [SerializeField]
         private InputManager _inputManager;
 
-        private void Update()
+        void IUpdateListener.OnUpdate(float deltaTime)
         {
             Shoot();
             MoveHorizontally();

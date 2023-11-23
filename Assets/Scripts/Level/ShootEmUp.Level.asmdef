@@ -1,3 +1,4 @@
 {
-	"name": "ShootEmUp.Level"
+	"name": "ShootEmUp.Level",
+	"references":[ "GUID:65fee02a940123541a50f7a68c7e3694" ]
 }

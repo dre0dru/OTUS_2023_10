@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using Bullets;
 using Components;
 using Enemy.Agents;
+using LifecycleEvents;
 using UnityEngine;
 
 namespace Enemy
 {
-    public sealed class EnemyManager : MonoBehaviour
+    public sealed class EnemyManager : MonoBehaviour, IStartListener, IFinishListener, IPauseListener, IResumeListener
     {
         [SerializeField]
         private EnemySpawner _enemySpawner;
@@ -22,20 +23,44 @@ namespace Enemy
         private int _maxSpawnedEnemies = 7;
 
         private readonly HashSet<GameObject> _activeEnemies = new();
+        private Coroutine _spawnRoutine;
 
-        private void Start()
+        void IStartListener.OnStartGame()
         {
-            StartCoroutine(SpawnEnemiesRoutine());
+            StartSpawnEnemies();
         }
 
-        private void OnDestroy()
+        void IFinishListener.OnFinishGame()
         {
-            StopAllCoroutines();
+            StopSpawnEnemies();
+        }
+
+        void IResumeListener.OnResumeGame()
+        {
+            StartSpawnEnemies();
+        }
+
+        void IPauseListener.OnPauseGame()
+        {
+            StopSpawnEnemies();
+        }
+
+        private void StartSpawnEnemies()
+        {
+            _spawnRoutine = StartCoroutine(SpawnEnemiesRoutine());
+        }
+
+        private void StopSpawnEnemies()
+        {
+            if (_spawnRoutine != null)
+            {
+                StopCoroutine(_spawnRoutine);
+                _spawnRoutine = null;
+            }
         }
 
         private IEnumerator SpawnEnemiesRoutine()
         {
-            //в идеале тут должна быть проверка на состояние игры, но у нас еще нет состояний
             while (true)
             {
                 yield return new WaitForSeconds(1);
@@ -53,16 +78,16 @@ namespace Enemy
 
             if (_activeEnemies.Add(enemy))
             {
-                enemy.GetComponent<HitPointsComponent>().OnDeath += OnDestroyed;
+                enemy.GetComponent<HitPointsComponent>().OnDeath += OnEnemyDestroyed;
                 enemy.GetComponent<EnemyAttackAgent>().OnShoot += OnShoot;
             }
         }
 
-        private void OnDestroyed(GameObject enemy)
+        private void OnEnemyDestroyed(GameObject enemy)
         {
             if (_activeEnemies.Remove(enemy))
             {
-                enemy.GetComponent<HitPointsComponent>().OnDeath -= OnDestroyed;
+                enemy.GetComponent<HitPointsComponent>().OnDeath -= OnEnemyDestroyed;
                 enemy.GetComponent<EnemyAttackAgent>().OnShoot -= OnShoot;
 
                 _enemySpawner.DespawnEnemy(enemy);

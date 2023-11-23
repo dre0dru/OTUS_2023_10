@@ -1,4 +1,5 @@
 using Enemy.Agents;
+using LifecycleEvents;
 using Pool;
 using UnityEngine;
 
@@ -6,7 +7,9 @@ namespace Enemy
 {
     public sealed class EnemySpawner : MonoBehaviour
     {
-        [Header("Spawn")]
+        [SerializeField]
+        private LifecycleManager _lifecycleManager;
+        
         [SerializeField]
         private EnemyPositions _enemyPositions;
 
@@ -16,7 +19,6 @@ namespace Enemy
         [SerializeField]
         private Transform _worldTransform;
 
-        [Header("Pool")]
         [SerializeField]
         private GameObjectPool _pool;
 
@@ -32,11 +34,16 @@ namespace Enemy
             enemy.GetComponent<EnemyMoveAgent>().SetDestination(attackPosition.position);
 
             enemy.GetComponent<EnemyAttackAgent>().SetTarget(_character);
+            
+            _lifecycleManager.AddListeners(enemy.gameObject);
+            
             return enemy;
         }
 
         public void DespawnEnemy(GameObject enemy)
         {
+            _lifecycleManager.RemoveListeners(enemy.gameObject);
+            
             _pool.Release(enemy);
         }
     }

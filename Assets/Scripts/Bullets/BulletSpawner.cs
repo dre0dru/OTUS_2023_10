@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using LifecycleEvents;
+using UnityEngine;
 
 namespace Bullets
 {
@@ -10,19 +11,28 @@ namespace Bullets
         [SerializeField]
         private Transform _worldTransform;
 
+        [SerializeField]
+        private LifecycleManager _lifecycleManager;
+
         public Bullet SpawnBullet(BulletArgs args)
         {
-            return GetBullet()
+            var bullet = GetBullet()
                 .SetPosition(args.Position)
                 .SetColor(args.Color)
                 .SetPhysicsLayer(args.PhysicsLayer)
                 .SetDamage(args.Damage)
                 .SetIsPlayer(args.IsPlayer)
                 .SetVelocity(args.Velocity);
+            
+            _lifecycleManager.AddListeners(bullet.gameObject);
+
+            return bullet;
         }
 
         public void DespawnBullet(Bullet bullet)
         {
+            _lifecycleManager.RemoveListeners(bullet.gameObject);
+            
             ReleaseBullet(bullet);
         }
 

@@ -1,7 +1,7 @@
 {
     "name": "ShootEmUp.GameInput",
     "rootNamespace": "",
-    "references": [],
+    "references": ["GUID:65fee02a940123541a50f7a68c7e3694"],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

@@ -1,10 +1,11 @@
 using System;
 using Components;
+using LifecycleEvents;
 using UnityEngine;
 
 namespace Enemy.Agents
 {
-    public sealed class EnemyAttackAgent : MonoBehaviour
+    public sealed class EnemyAttackAgent : MonoBehaviour, IFixedUpdateListener
     {
         public event Action<Vector2, Vector2> OnShoot;
 
@@ -20,7 +21,7 @@ namespace Enemy.Agents
         private GameObject _target;
         private float _currentTime;
 
-        private void FixedUpdate()
+        void IFixedUpdateListener.OnFixedUpdate(float deltaTime)
         {
             if (!CanShoot())
             {
@@ -42,7 +43,7 @@ namespace Enemy.Agents
 
         private bool CanShoot()
         {
-            return _moveAgent.IsDestinationReached && 
+            return _moveAgent.IsDestinationReached &&
                    _target.GetComponent<HitPointsComponent>().IsHitPointsExists();
         }
 

@@ -1,13 +1,14 @@
+using LifecycleEvents;
 using UnityEngine;
 
 namespace GameInput
 {
-    public sealed class InputManager : MonoBehaviour
+    public sealed class InputManager : MonoBehaviour, IUpdateListener
     {
         public bool IsShootInputPressed { get; private set; }
         public float HorizontalInput { get; private set; }
 
-        private void Update()
+        void IUpdateListener.OnUpdate(float deltaTime)
         {
             IsShootInputPressed = Input.GetKeyDown(KeyCode.Space);
 

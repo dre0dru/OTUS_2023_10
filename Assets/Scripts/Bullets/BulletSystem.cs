@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using Level;
+using LifecycleEvents;
 using UnityEngine;
 
 namespace Bullets
 {
-    public sealed class BulletSystem : MonoBehaviour
+    public sealed class BulletSystem : MonoBehaviour, IFixedUpdateListener
     {
         [SerializeField]
         private LevelBounds _levelBounds;
@@ -15,11 +16,11 @@ namespace Bullets
         private readonly HashSet<Bullet> _activeBullets = new();
         private readonly List<Bullet> _bulletsCache = new();
 
-        private void FixedUpdate()
+        void IFixedUpdateListener.OnFixedUpdate(float deltaTime)
         {
             CheckBulletsOutOfBounds();
         }
-
+        
         public void ShootBullet(BulletArgs args)
         {
             var bullet = _bulletSpawner.SpawnBullet(args);

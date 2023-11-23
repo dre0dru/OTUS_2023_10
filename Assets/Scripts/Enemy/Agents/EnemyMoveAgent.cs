@@ -1,9 +1,10 @@
 using Components;
+using LifecycleEvents;
 using UnityEngine;
 
 namespace Enemy.Agents
 {
-    public sealed class EnemyMoveAgent : MonoBehaviour
+    public sealed class EnemyMoveAgent : MonoBehaviour, IFixedUpdateListener
     {
         private const float StoppingDistance = 0.25f;
 
@@ -16,7 +17,7 @@ namespace Enemy.Agents
 
         public bool IsDestinationReached => _isDestinationReached;
 
-        private void FixedUpdate()
+        void IFixedUpdateListener.OnFixedUpdate(float deltaTime)
         {
             if (_isDestinationReached)
             {
