@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace LifecycleEvents
 {
@@ -25,7 +24,7 @@ namespace LifecycleEvents
         
         private GameObject[] GetRootGameObjects()
         {
-            var scene = SceneManager.GetActiveScene();
+            var scene = gameObject.scene;
             return scene.GetRootGameObjects();
         }
     }
