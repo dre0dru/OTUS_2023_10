@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Bullets;
 using Components;
 using Enemy.Agents;
 using LifecycleEvents;
