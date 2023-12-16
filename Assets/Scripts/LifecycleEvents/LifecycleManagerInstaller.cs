@@ -6,26 +6,16 @@ namespace LifecycleEvents
     {
         [SerializeField]
         private LifecycleManager _lifecycleManager;
-        
+
         private void Awake()
         {
             //как вариант, можно заменить на сериализованное поле с рутами
-            var rootGameObjects = GetRootGameObjects();
-            AddListenersFromRootGameObjects(rootGameObjects);
-        }
+            var rootGameObjects = gameObject.scene.GetRootGameObjects();
 
-        private void AddListenersFromRootGameObjects(GameObject[] rootGameObjects)
-        {
             foreach (var rootGameObject in rootGameObjects)
             {
                 _lifecycleManager.AddListeners(rootGameObject);
             }
-        }
-        
-        private GameObject[] GetRootGameObjects()
-        {
-            var scene = gameObject.scene;
-            return scene.GetRootGameObjects();
         }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using Components;
 using LifecycleEvents;
 using UnityEngine;
 
@@ -19,7 +20,6 @@ namespace Bullets
 
         public int Damage => _damage;
 
-        //пока не стал выносить в отдельный класс, так как другой логики тут нет и негде переиспользовать коллизии
         private void OnCollisionEnter2D(Collision2D collision)
         {
             OnCollisionEntered?.Invoke(this, collision);
@@ -64,6 +64,24 @@ namespace Bullets
         {
             _spriteRenderer.color = color;
             return this;
+        }
+        
+        public void DealDamage(GameObject other)
+        {
+            if (!other.TryGetComponent(out TeamComponent team))
+            {
+                return;
+            }
+
+            if (IsPlayer == team.IsPlayer)
+            {
+                return;
+            }
+
+            if (other.TryGetComponent(out HitPointsComponent hitPoints))
+            {
+                hitPoints.TakeDamage(Damage);
+            }
         }
     }
 }
