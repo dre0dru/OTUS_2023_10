@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Enemy.Agents
 {
-    public sealed class EnemyAttackAgent : MonoBehaviour, IFixedUpdateListener
+    public sealed class EnemyAttackAgent : MonoBehaviour
     {
         public event Action<Vector2, Vector2> OnShoot;
 
@@ -21,7 +21,7 @@ namespace Enemy.Agents
         private GameObject _target;
         private float _currentTime;
 
-        void IFixedUpdateListener.OnFixedUpdate(float deltaTime)
+        public void ProcessShooting()
         {
             if (!CanShoot())
             {
@@ -29,11 +29,6 @@ namespace Enemy.Agents
             }
 
             ShootByCountdown();
-        }
-
-        private void Reset()
-        {
-            _currentTime = _countdown;
         }
 
         public void SetTarget(GameObject target)
@@ -63,6 +58,11 @@ namespace Enemy.Agents
             var vector = (Vector2)_target.transform.position - startPosition;
             var direction = vector.normalized;
             OnShoot?.Invoke(startPosition, direction);
+        }
+
+        private void Reset()
+        {
+            _currentTime = _countdown;
         }
     }
 }

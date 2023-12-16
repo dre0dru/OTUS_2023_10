@@ -1,25 +1,19 @@
-﻿using System;
-using Bullets;
-using Components;
+﻿using Components;
 using GameInput;
 using LifecycleEvents;
 using UnityEngine;
 
 namespace Character
 {
-    public class CharacterMoveController : MonoBehaviour, IUpdateListener
+    public sealed class CharacterMoveController : IUpdateListener
     {
-        [SerializeField]
-        private GameObject _character;
+        private readonly InputManager _inputManager;
+        private readonly MoveComponent _moveComponent;
 
-        [SerializeField]
-        private InputManager _inputManager;
-
-        private MoveComponent _moveComponent;
-
-        private void Awake()
+        public CharacterMoveController(InputManager inputManager, GameObject character)
         {
-            _moveComponent = _character.GetComponent<MoveComponent>();
+            _inputManager = inputManager;
+            _moveComponent = character.GetComponent<MoveComponent>();
         }
 
         void IUpdateListener.OnUpdate(float deltaTime)

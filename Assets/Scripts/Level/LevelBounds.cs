@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace Level
 {
+    //Избавляться от MonoBehaviour не стал, так как сильно уменьшает удобство настройки 
     public sealed class LevelBounds : MonoBehaviour
     {
         [SerializeField]

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace GameInput
 {
-    public sealed class InputManager : MonoBehaviour, IUpdateListener
+    public sealed class InputManager : IUpdateListener
     {
         public bool IsShootInputPressed { get; private set; }
         public float HorizontalInput { get; private set; }

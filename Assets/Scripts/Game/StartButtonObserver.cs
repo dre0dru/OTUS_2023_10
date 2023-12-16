@@ -1,26 +1,30 @@
-﻿using UnityEngine;
+﻿using System;
 using UnityEngine.UI;
+using VContainer.Unity;
 
 namespace Game
 {
-    public class StartButtonObserver : MonoBehaviour
+    public sealed class StartButtonObserver : IInitializable, IDisposable
     {
-        [SerializeField]
-        private CountdownGameStarter _countdownGameStarter;
-        
-        [SerializeField]
-        private Button _startGameButton;
+        private readonly CountdownGameStarter _countdownGameStarter;
+        private readonly Button _startGameButton;
 
-        private void Awake()
+        public StartButtonObserver(CountdownGameStarter countdownGameStarter, Button startGameButton)
+        {
+            _countdownGameStarter = countdownGameStarter;
+            _startGameButton = startGameButton;
+        }
+
+        void IInitializable.Initialize()
         {
             _startGameButton.onClick.AddListener(OnStartGameClick);
         }
 
-        private void OnDestroy()
+        void IDisposable.Dispose()
         {
             _startGameButton.onClick.RemoveListener(OnStartGameClick);
         }
-        
+
         private void OnStartGameClick()
         {
             _startGameButton.gameObject.SetActive(false);

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using VContainer.Unity;
 
 namespace LifecycleEvents
 {
@@ -11,10 +12,8 @@ namespace LifecycleEvents
         FINISHED = 3
     }
 
-    public sealed class LifecycleManager : MonoBehaviour
+    public sealed class LifecycleManager : ITickable, ILateTickable, IFixedTickable
     {
-        public GameState State => _state;
-
         private GameState _state;
 
         private readonly List<ILifecycleListener> _listeners = new();
@@ -22,7 +21,15 @@ namespace LifecycleEvents
         private readonly List<IFixedUpdateListener> _fixedUpdateListeners = new();
         private readonly List<ILateUpdateListener> _lateUpdateListeners = new();
 
-        private void Update()
+        public LifecycleManager(IEnumerable<ILifecycleListener> lifecycleListeners)
+        {
+            foreach (var listener in lifecycleListeners)
+            {
+                AddListener(listener);
+            }
+        }
+        
+        void ITickable.Tick()
         {
             if (_state != GameState.PLAYING)
             {
@@ -37,7 +44,7 @@ namespace LifecycleEvents
             }
         }
 
-        private void FixedUpdate()
+        void IFixedTickable.FixedTick()
         {
             if (_state != GameState.PLAYING)
             {
@@ -52,7 +59,7 @@ namespace LifecycleEvents
             }
         }
 
-        private void LateUpdate()
+        void ILateTickable.LateTick()
         {
             if (_state != GameState.PLAYING)
             {
@@ -91,7 +98,6 @@ namespace LifecycleEvents
                 _lateUpdateListeners.Add(lateUpdateListener);
             }
         }
-
 
         public void RemoveListener(ILifecycleListener listener)
         {

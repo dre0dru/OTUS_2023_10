@@ -1,25 +1,30 @@
-﻿using Components;
+﻿using System;
+using Components;
 using LifecycleEvents;
 using UnityEngine;
+using VContainer.Unity;
 
 namespace Game
 {
-    public class CharacterDeathObserver : MonoBehaviour, IStartListener, IFinishListener
+    public sealed class CharacterDeathObserver : IInitializable, IDisposable
     {
-        [SerializeField]
-        private LifecycleManager _lifecycleManager;
+        private readonly LifecycleManager _lifecycleManager;
+        private readonly HitPointsComponent _characterHitPointsComponent;
 
-        [SerializeField]
-        private GameObject _character;
-
-        void IStartListener.OnStartGame()
+        public CharacterDeathObserver(LifecycleManager lifecycleManager, GameObject character)
         {
-            _character.GetComponent<HitPointsComponent>().OnDeath += OnCharacterDeath;
+            _lifecycleManager = lifecycleManager;
+            _characterHitPointsComponent = character.GetComponent<HitPointsComponent>();
         }
 
-        void IFinishListener.OnFinishGame()
+        public void Initialize()
         {
-            _character.GetComponent<HitPointsComponent>().OnDeath -= OnCharacterDeath;
+            _characterHitPointsComponent.OnDeath += OnCharacterDeath;
+        }
+
+        public void Dispose()
+        {
+            _characterHitPointsComponent.OnDeath -= OnCharacterDeath;
         }
 
         private void OnCharacterDeath(GameObject _)

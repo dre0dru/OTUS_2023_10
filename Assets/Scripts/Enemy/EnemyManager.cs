@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using Bullets;
 using Components;
@@ -8,22 +7,25 @@ using UnityEngine;
 
 namespace Enemy
 {
-    public sealed class EnemyManager : MonoBehaviour, IStartListener, IFinishListener, IPauseListener, IResumeListener
+    public sealed class EnemyManager : IStartListener, IFinishListener, IPauseListener, IResumeListener,
+        IFixedUpdateListener
     {
-        [SerializeField]
-        private EnemySpawner _enemySpawner;
+        private const int MaxSpawnedEnemies = 7;
+        private const float EnemiesSpawnFrequencySec = 1;
 
-        [SerializeField]
-        private BulletSystem _bulletSystem;
-
-        [SerializeField]
-        private BulletConfig _bulletConfig;
-
-        [SerializeField]
-        private int _maxSpawnedEnemies = 7;
-
+        private readonly EnemySpawner _enemySpawner;
+        private readonly EnemyShooter _enemyShooter;
         private readonly HashSet<GameObject> _activeEnemies = new();
-        private Coroutine _spawnRoutine;
+        private readonly List<GameObject> _enemiesCache = new();
+
+        private bool _isSpawningEnemies;
+        private float _lastSpawnedEnemyTime;
+
+        public EnemyManager(EnemySpawner enemySpawner, EnemyShooter enemyShooter)
+        {
+            _enemyShooter = enemyShooter;
+            _enemySpawner = enemySpawner;
+        }
 
         void IStartListener.OnStartGame()
         {
@@ -45,33 +47,41 @@ namespace Enemy
             StopSpawnEnemies();
         }
 
+        void IFixedUpdateListener.OnFixedUpdate(float deltaTime)
+        {
+            SpawnEnemies();
+            UpdateEnemies();
+        }
+
         private void StartSpawnEnemies()
         {
-            _spawnRoutine = StartCoroutine(SpawnEnemiesRoutine());
+            _isSpawningEnemies = true;
         }
 
         private void StopSpawnEnemies()
         {
-            if (_spawnRoutine != null)
-            {
-                StopCoroutine(_spawnRoutine);
-                _spawnRoutine = null;
-            }
+            _isSpawningEnemies = false;
         }
 
-        private IEnumerator SpawnEnemiesRoutine()
+        private void SpawnEnemies()
         {
-            while (true)
+            if (!_isSpawningEnemies)
             {
-                yield return new WaitForSeconds(1);
-
-                if (_activeEnemies.Count < _maxSpawnedEnemies)
-                {
-                    SpawnEnemy();
-                }
+                return;
             }
-        }
 
+            var currentTime = Time.time;
+            if (currentTime + EnemiesSpawnFrequencySec < _lastSpawnedEnemyTime ||
+                _activeEnemies.Count >= MaxSpawnedEnemies)
+            {
+                return;
+            }
+
+            _lastSpawnedEnemyTime = currentTime;
+
+            SpawnEnemy();
+        }
+        
         private void SpawnEnemy()
         {
             var enemy = _enemySpawner.SpawnEnemy();
@@ -79,7 +89,22 @@ namespace Enemy
             if (_activeEnemies.Add(enemy))
             {
                 enemy.GetComponent<HitPointsComponent>().OnDeath += OnEnemyDestroyed;
-                enemy.GetComponent<EnemyAttackAgent>().OnShoot += OnShoot;
+                enemy.GetComponent<EnemyAttackAgent>().OnShoot += _enemyShooter.Shoot;
+            }
+        }
+
+        private void UpdateEnemies()
+        {
+            _enemiesCache.Clear();
+            _enemiesCache.AddRange(_activeEnemies);
+
+            for (int i = 0; i < _enemiesCache.Count; i++)
+            {
+                var enemy = _enemiesCache[i];
+                
+                //Знаю, что GetComponent в апдейтах плохо, но это не по теме ДЗ
+                enemy.GetComponent<EnemyAttackAgent>().ProcessShooting();
+                enemy.GetComponent<EnemyMoveAgent>().ProcessMovement();
             }
         }
 
@@ -88,23 +113,10 @@ namespace Enemy
             if (_activeEnemies.Remove(enemy))
             {
                 enemy.GetComponent<HitPointsComponent>().OnDeath -= OnEnemyDestroyed;
-                enemy.GetComponent<EnemyAttackAgent>().OnShoot -= OnShoot;
+                enemy.GetComponent<EnemyAttackAgent>().OnShoot -= _enemyShooter.Shoot;
 
                 _enemySpawner.DespawnEnemy(enemy);
             }
-        }
-
-        private void OnShoot(Vector2 position, Vector2 direction)
-        {
-            _bulletSystem.ShootBullet(new BulletArgs
-            {
-                IsPlayer = false,
-                PhysicsLayer = (int)_bulletConfig.PhysicsLayer,
-                Color = _bulletConfig.Color,
-                Damage = _bulletConfig.Damage,
-                Position = position,
-                Velocity = direction * _bulletConfig.Speed
-            });
         }
     }
 }

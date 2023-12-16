@@ -1,32 +1,36 @@
-﻿using LifecycleEvents;
-using UnityEngine;
+﻿using System;
+using LifecycleEvents;
 using UnityEngine.UI;
+using VContainer.Unity;
 
 namespace Game
 {
-    public class PauseResumeButtonsObserver : MonoBehaviour
+    public sealed class PauseResumeButtonsObserver : IInitializable, IDisposable
     {
-        [SerializeField]
-        private LifecycleManager _lifecycleManager;
+        private readonly LifecycleManager _lifecycleManager;
+        private readonly Button _pauseButton;
+        private readonly Button _resumeButton;
 
-        [SerializeField]
-        private Button _pauseButton;
+        public PauseResumeButtonsObserver(LifecycleManager lifecycleManager,
+            (Button pauseButton, Button resumeButton) buttons)
+        {
+            _lifecycleManager = lifecycleManager;
+            _pauseButton = buttons.pauseButton;
+            _resumeButton = buttons.resumeButton;
+        }
 
-        [SerializeField]
-        private Button _resumeButton;
-
-        private void Awake()
+        public void Initialize()
         {
             _pauseButton.onClick.AddListener(OnPauseClick);
             _resumeButton.onClick.AddListener(OnResumeClick);
         }
 
-        private void OnDestroy()
+        public void Dispose()
         {
             _pauseButton.onClick.RemoveListener(OnPauseClick);
             _resumeButton.onClick.RemoveListener(OnResumeClick);
         }
-        
+
         private void OnResumeClick()
         {
             _lifecycleManager.ResumeGame();

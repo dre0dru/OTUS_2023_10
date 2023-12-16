@@ -1,17 +1,19 @@
 ﻿using LifecycleEvents;
-using UnityEngine;
 using UnityEngine.UI;
 
 namespace Game
 {
-    public class PauseResumeButtonStateController : MonoBehaviour, IStartListener, IFinishListener, IResumeListener,
+    public sealed class PauseResumeButtonStateController : IStartListener, IFinishListener, IResumeListener,
         IPauseListener
     {
-        [SerializeField]
-        private Button _pauseButton;
+        private readonly Button _pauseButton;
+        private readonly Button _resumeButton;
 
-        [SerializeField]
-        private Button _resumeButton;
+        public PauseResumeButtonStateController((Button pauseButton, Button resumeButton) buttons)
+        {
+            _pauseButton = buttons.pauseButton;
+            _resumeButton = buttons.resumeButton;
+        }
 
         void IStartListener.OnStartGame()
         {

@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace Enemy
 {
+    //Избавляться от MonoBehaviour не стал, так как сильно уменьшает удобство настройки 
     public sealed class EnemyPositions : MonoBehaviour
     {
         [SerializeField]

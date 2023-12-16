@@ -1,11 +1,10 @@
 using System;
 using Components;
-using LifecycleEvents;
 using UnityEngine;
 
 namespace Bullets
 {
-    public sealed class Bullet : MonoBehaviour, IFixedUpdateListener
+    public sealed class Bullet : MonoBehaviour
     {
         public event Action<Bullet, Collision2D> OnCollisionEntered;
 
@@ -25,7 +24,7 @@ namespace Bullets
             OnCollisionEntered?.Invoke(this, collision);
         }
 
-        void IFixedUpdateListener.OnFixedUpdate(float deltaTime)
+        public void MoveBullet(float deltaTime)
         {
             transform.Translate(_velocity * deltaTime);
         }

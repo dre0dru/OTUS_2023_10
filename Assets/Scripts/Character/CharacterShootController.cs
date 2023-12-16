@@ -1,5 +1,4 @@
-﻿using System;
-using Bullets;
+﻿using Bullets;
 using Components;
 using GameInput;
 using LifecycleEvents;
@@ -7,25 +6,20 @@ using UnityEngine;
 
 namespace Character
 {
-    public class CharacterShootController : MonoBehaviour, IUpdateListener
+    public sealed class CharacterShootController : IUpdateListener
     {
-        [SerializeField]
-        private GameObject _character;
+        private readonly BulletSystem _bulletSystem;
+        private readonly BulletConfig _bulletConfig;
+        private readonly InputManager _inputManager;
+        private readonly WeaponComponent _weaponComponent;
 
-        [SerializeField]
-        private BulletSystem _bulletSystem;
-
-        [SerializeField]
-        private BulletConfig _bulletConfig;
-
-        [SerializeField]
-        private InputManager _inputManager;
-
-        private WeaponComponent _weaponComponent;
-
-        private void Awake()
+        public CharacterShootController(BulletSystem bulletSystem, BulletConfig bulletConfig, InputManager inputManager,
+            GameObject character)
         {
-            _weaponComponent = _character.GetComponent<WeaponComponent>();
+            _bulletSystem = bulletSystem;
+            _bulletConfig = bulletConfig;
+            _inputManager = inputManager;
+            _weaponComponent = character.GetComponent<WeaponComponent>();
         }
 
         void IUpdateListener.OnUpdate(float deltaTime)

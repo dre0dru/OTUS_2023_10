@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Level
 {
+    //Избавляться от MonoBehaviour не стал, так как не имеет зависимостей и не является зависимостью
     public sealed class LevelBackground : MonoBehaviour, IFixedUpdateListener
     {
         [SerializeField]

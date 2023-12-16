@@ -3,42 +3,18 @@ using UnityEngine.Pool;
 
 namespace Pool
 {
-    public abstract class UnityObjectPool<T> : MonoBehaviour
+    public abstract class UnityObjectPool<T>
         where T : Object
     {
-        [SerializeField]
-        private T _prefab;
+        protected readonly Transform Root;
+        private readonly T _prefab;
+        private readonly ObjectPool<T> _pool;
 
-        [SerializeField]
-        protected Transform _root;
-
-        [SerializeField]
-        private bool _prewarmOnStart;
-
-        [SerializeField]
-        private int _prewarmOnStartCount;
-
-        private ObjectPool<T> _pool;
-
-        private void Awake()
+        protected UnityObjectPool(T prefab, Transform root)
         {
+            _prefab = prefab;
+            Root = root;
             _pool = new ObjectPool<T>(Create, actionOnRelease: OnRelease, actionOnDestroy: OnCleanup);
-        }
-
-        private void Start()
-        {
-            if (_prewarmOnStart)
-            {
-                Prewarm(_prewarmOnStartCount);
-            }
-        }
-
-        public void Prewarm(int count)
-        {
-            for (int i = 0; i < count; i++)
-            {
-                _pool.Release(Create());
-            }
         }
 
         public T Get()
@@ -53,7 +29,7 @@ namespace Pool
 
         private T Create()
         {
-            return Instantiate(_prefab, _root);
+            return Object.Instantiate(_prefab, Root);
         }
 
         protected abstract void OnRelease(T prefab);

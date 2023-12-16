@@ -5,20 +5,24 @@ using UnityEngine;
 
 namespace Bullets
 {
-    public sealed class BulletSystem : MonoBehaviour, IFixedUpdateListener
+    public sealed class BulletSystem : IFixedUpdateListener
     {
-        [SerializeField]
-        private LevelBounds _levelBounds;
-
-        [SerializeField]
-        private BulletSpawner _bulletSpawner;
+        private readonly LevelBounds _levelBounds;
+        private readonly BulletSpawner _bulletSpawner;
 
         private readonly HashSet<Bullet> _activeBullets = new();
         private readonly List<Bullet> _bulletsCache = new();
 
+        public BulletSystem(LevelBounds levelBounds, BulletSpawner bulletSpawner)
+        {
+            _levelBounds = levelBounds;
+            _bulletSpawner = bulletSpawner;
+        }
+
         void IFixedUpdateListener.OnFixedUpdate(float deltaTime)
         {
             CheckBulletsOutOfBounds();
+            MoveBullets(deltaTime);
         }
         
         public void ShootBullet(BulletArgs args)
@@ -49,6 +53,15 @@ namespace Bullets
                 {
                     RemoveBullet(bullet);
                 }
+            }
+        }
+
+        private void MoveBullets(float deltaTime)
+        {
+            for (int i = 0; i < _bulletsCache.Count; i++)
+            {
+                var bullet = _bulletsCache[i];
+                bullet.MoveBullet(deltaTime);
             }
         }
 

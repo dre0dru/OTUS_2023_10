@@ -1,18 +1,18 @@
-﻿using LifecycleEvents;
+﻿using Pool;
 using UnityEngine;
 
 namespace Bullets
 {
-    public class BulletSpawner : MonoBehaviour
+    public class BulletSpawner
     {
-        [SerializeField]
-        private BulletPool _bulletPool;
+        private readonly PrefabPool<Bullet> _bulletPool;
+        private readonly Transform _worldTransform;
 
-        [SerializeField]
-        private Transform _worldTransform;
-
-        [SerializeField]
-        private LifecycleManager _lifecycleManager;
+        public BulletSpawner(PrefabPool<Bullet> bulletPool, Transform worldTransform)
+        {
+            _bulletPool = bulletPool;
+            _worldTransform = worldTransform;
+        }
 
         public Bullet SpawnBullet(BulletArgs args)
         {
@@ -23,16 +23,12 @@ namespace Bullets
                 .SetDamage(args.Damage)
                 .SetIsPlayer(args.IsPlayer)
                 .SetVelocity(args.Velocity);
-            
-            _lifecycleManager.AddListeners(bullet.gameObject);
 
             return bullet;
         }
 
         public void DespawnBullet(Bullet bullet)
         {
-            _lifecycleManager.RemoveListeners(bullet.gameObject);
-            
             ReleaseBullet(bullet);
         }
 

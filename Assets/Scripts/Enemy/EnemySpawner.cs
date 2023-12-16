@@ -5,22 +5,21 @@ using UnityEngine;
 
 namespace Enemy
 {
-    public sealed class EnemySpawner : MonoBehaviour
+    public sealed class EnemySpawner
     {
-        [SerializeField]
-        private LifecycleManager _lifecycleManager;
-        
-        [SerializeField]
-        private EnemyPositions _enemyPositions;
+        private readonly EnemyPositions _enemyPositions;
+        private readonly Transform _worldTransform;
+        private readonly GameObjectPool _pool;
+        private readonly GameObject _character;
 
-        [SerializeField]
-        private GameObject _character;
-
-        [SerializeField]
-        private Transform _worldTransform;
-
-        [SerializeField]
-        private GameObjectPool _pool;
+        public EnemySpawner(EnemyPositions enemyPositions, GameObject character, Transform worldTransform,
+            GameObjectPool pool)
+        {
+            _enemyPositions = enemyPositions;
+            _worldTransform = worldTransform;
+            _pool = pool;
+            _character = character;
+        }
 
         public GameObject SpawnEnemy()
         {
@@ -31,19 +30,15 @@ namespace Enemy
             enemy.transform.position = spawnPosition.position;
 
             var attackPosition = _enemyPositions.RandomAttackPosition();
-            enemy.GetComponent<EnemyMoveAgent>().SetDestination(attackPosition.position);
 
+            enemy.GetComponent<EnemyMoveAgent>().SetDestination(attackPosition.position);
             enemy.GetComponent<EnemyAttackAgent>().SetTarget(_character);
-            
-            _lifecycleManager.AddListeners(enemy.gameObject);
-            
+
             return enemy;
         }
 
         public void DespawnEnemy(GameObject enemy)
         {
-            _lifecycleManager.RemoveListeners(enemy.gameObject);
-            
             _pool.Release(enemy);
         }
     }
