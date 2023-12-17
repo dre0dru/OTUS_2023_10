@@ -9,7 +9,7 @@ namespace HomeworkHelpers
     [Serializable]
     public class CharacterDataHelper
     {
-        [InfoBox("Для добавления/удаления статов используйте кнопки ниже!", InfoMessageType.Warning)]
+        [InfoBox("Для добавления/удаления статов используйте кнопки ниже! Остальные данные можно менять напрямую через модель.", InfoMessageType.Warning)]
         [SerializeReference]
         private CharacterInfo _characterInfo;
 

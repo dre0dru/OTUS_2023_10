@@ -9,7 +9,7 @@ namespace HomeworkHelpers
 {
     public class PlayerPanelPopupHelper : MonoBehaviour
     {
-        [InfoBox("Запустите плеймод, данные персонажей заполнятся, далее используйте кнопке для показа Popup для конкретного персонажа")]
+        [InfoBox("Запустите плеймод, данные персонажей заполнятся, далее используйте кнопке для показа Popup для конкретного персонажа.")]
         [SerializeField]
         private Sprite[] _avatars;
 
@@ -67,31 +67,29 @@ namespace HomeworkHelpers
         [Button(ButtonSizes.Large)]
         private void ShowPopupForUther()
         {
-            var infoPresenter = new CharacterInfoPresenter(_utherData.UserInfo);
-            var levelPresenter = new CharacterLevelPresenter(_utherData.PlayerLevel);
-            var statsPresenter = new CharacterStatsPresenter(_utherData.CharacterInfo);
-
-            _playerPanelPopup.Initialize(new PlayerPanelPresenter(infoPresenter, levelPresenter, statsPresenter));
+            ShowPopup(_utherData);
         }
 
         [Button(ButtonSizes.Large)]
         private void ShowPopupForGarrosh()
         {
-            var infoPresenter = new CharacterInfoPresenter(_garroshData.UserInfo);
-            var levelPresenter = new CharacterLevelPresenter(_garroshData.PlayerLevel);
-            var statsPresenter = new CharacterStatsPresenter(_garroshData.CharacterInfo);
-
-            _playerPanelPopup.Initialize(new PlayerPanelPresenter(infoPresenter, levelPresenter, statsPresenter));
+            ShowPopup(_garroshData);
         }
 
         [Button(ButtonSizes.Large)]
         private void ShowPopupForJaina()
         {
-            var infoPresenter = new CharacterInfoPresenter(_jainaData.UserInfo);
-            var levelPresenter = new CharacterLevelPresenter(_jainaData.PlayerLevel);
-            var statsPresenter = new CharacterStatsPresenter(_jainaData.CharacterInfo);
+            ShowPopup(_jainaData);
+        }
+
+        private void ShowPopup(CharacterDataHelper characterDataHelper)
+        {
+            var infoPresenter = new CharacterInfoPresenter(characterDataHelper.UserInfo);
+            var levelPresenter = new CharacterLevelPresenter(characterDataHelper.PlayerLevel);
+            var statsPresenter = new CharacterStatsPresenter(characterDataHelper.CharacterInfo);
 
             _playerPanelPopup.Initialize(new PlayerPanelPresenter(infoPresenter, levelPresenter, statsPresenter));
+            _playerPanelPopup.Show();
         }
     }
 }
