@@ -1,7 +1,7 @@
 using System;
 using Sirenix.OdinInspector;
 
-namespace Lessons.Architecture.PM
+namespace Characters
 {
     public sealed class PlayerLevel
     {
@@ -18,6 +18,12 @@ namespace Lessons.Architecture.PM
         public int RequiredExperience
         {
             get { return 100 * (this.CurrentLevel + 1); }
+        }
+
+        public PlayerLevel(int currentLevel, int currentExperience)
+        {
+            CurrentLevel = currentLevel;
+            CurrentExperience = Math.Min(currentExperience, this.RequiredExperience);
         }
 
         [Button]

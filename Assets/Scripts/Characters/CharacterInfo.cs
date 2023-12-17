@@ -2,16 +2,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Sirenix.OdinInspector;
+using Sirenix.Utilities;
 
-namespace Lessons.Architecture.PM
+namespace Characters
 {
     public sealed class CharacterInfo
     {
         public event Action<CharacterStat> OnStatAdded;
         public event Action<CharacterStat> OnStatRemoved;
-    
+
         [ShowInInspector]
         private readonly HashSet<CharacterStat> stats = new();
+
+        public CharacterInfo(IEnumerable<CharacterStat> characterStats)
+        {
+            stats.AddRange(characterStats);
+        }
 
         [Button]
         public void AddStat(CharacterStat stat)
