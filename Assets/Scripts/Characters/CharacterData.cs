@@ -1,13 +1,12 @@
 ﻿using System;
-using Characters;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using CharacterInfo = Characters.CharacterInfo;
 
-namespace HomeworkHelpers
+namespace Characters
 {
+    //Класс для удобства тестирования
     [Serializable]
-    public class CharacterDataHelper
+    public class CharacterData
     {
         [InfoBox("Для добавления/удаления статов используйте кнопки ниже! Остальные данные можно менять напрямую через модель.", InfoMessageType.Warning)]
         [SerializeReference]
@@ -25,7 +24,7 @@ namespace HomeworkHelpers
 
         public UserInfo UserInfo => _userInfo;
 
-        public CharacterDataHelper(CharacterInfo characterInfo, PlayerLevel playerLevel, UserInfo userInfo)
+        public CharacterData(CharacterInfo characterInfo, PlayerLevel playerLevel, UserInfo userInfo)
         {
             _characterInfo = characterInfo;
             _playerLevel = playerLevel;

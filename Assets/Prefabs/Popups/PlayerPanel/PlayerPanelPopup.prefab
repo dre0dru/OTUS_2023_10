@@ -690,6 +690,8 @@ GameObject:
   - component: {fileID: 3602046924260592631}
   - component: {fileID: 5271019283266471444}
   - component: {fileID: 36636836794328282}
+  - component: {fileID: 5024555964159611279}
+  - component: {fileID: 7484880275894290922}
   m_Layer: 5
   m_Name: PlayerPanelPopup
   m_TagString: Untagged
@@ -731,6 +733,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c75dd62dbfb41f1aea76d3cb5219314, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _canvasGroup: {fileID: 5024555964159611279}
+  _animation: {fileID: 7484880275894290922}
+  _isCached: 0
   _closeButton: {fileID: 6398937291403664772}
   _characterInfoView: {fileID: 3602046924260592631}
   _characterLevelView: {fileID: 5271019283266471444}
@@ -785,6 +790,31 @@ MonoBehaviour:
   _statViewPrefab: {fileID: 2559585497762678514, guid: 8d031ef66e90b2a45a1f5369f5375a6c,
     type: 3}
   _content: {fileID: 6398937290518839588}
+--- !u!225 &5024555964159611279
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6398937291248815360}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &7484880275894290922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6398937291248815360}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce8b22d061254f949fe86aa36f9cd106, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _popupRoot: {fileID: 0}
 --- !u!1 &6398937291382307624
 GameObject:
   m_ObjectHideFlags: 0

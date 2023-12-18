@@ -1,10 +1,11 @@
-﻿using Presenters.PlayerPanel;
+﻿using PresentationModel.Popups;
+using Presenters.PlayerPanel;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Popups.PlayerPanel
 {
-    public class PlayerPanelPopup : MonoBehaviour
+    public class PlayerPanelPopup : PopupBase
     {
         [SerializeField]
         private Button _closeButton;
@@ -23,26 +24,17 @@ namespace Popups.PlayerPanel
             _closeButton.onClick.AddListener(Close);
         }
 
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
+            base.OnDestroy();
             _closeButton.onClick.RemoveListener(Close);
         }
 
-        public void Initialize(IPlayerPanelPresenter presenter)
+        public void SetPresenter(IPlayerPanelPresenter presenter)
         {
             _characterInfoView.Initialize(presenter.CharacterInfoPresenter);
             _characterLevelView.Initialize(presenter.CharacterLevelPresenter);
             _characterStatsView.Initialize(presenter.CharacterStatsPresenter);
-        }
-
-        public void Show()
-        {
-            gameObject.SetActive(true);
-        }
-
-        private void Close()
-        {
-            gameObject.SetActive(false);
         }
     }
 }

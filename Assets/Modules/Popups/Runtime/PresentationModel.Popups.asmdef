@@ -1,10 +1,7 @@
 {
-    "name": "PresentationModel",
-    "rootNamespace": "",
-    "references": [
-        "GUID:d16ca96209b0d1c4fb381d3c8b5feb0a",
-        "GUID:b0214a6008ed146ff8f122a6a9c2f6cc"
-    ],
+    "name": "PresentationModel.Popups",
+    "rootNamespace": "PresentationModel.Popups",
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
