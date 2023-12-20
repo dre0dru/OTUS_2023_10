@@ -23,9 +23,6 @@ namespace Popups.PlayerPanel
 
         public void Initialize(ICharacterStatsPresenter presenter)
         {
-            ClearViews();
-            Unsubscribe();
-
             _characterStatsPresenter = presenter;
 
             CreateViews();
@@ -33,10 +30,18 @@ namespace Popups.PlayerPanel
             Subscribe();
         }
 
+        public void ReleasePresenters()
+        {
+            ClearViews();
+            Unsubscribe();
+            _characterStatsPresenter.Dispose();
+        }
+
         private void ClearViews()
         {
             foreach (var view in _views.Values)
             {
+                view.ReleasePresenters();
                 DestroyStatView(view);
             }
 
@@ -45,11 +50,8 @@ namespace Popups.PlayerPanel
 
         private void Unsubscribe()
         {
-            if (_characterStatsPresenter != null)
-            {
-                _characterStatsPresenter.OnStatAdded += OnStatAdded;
-                _characterStatsPresenter.OnStatRemoved += OnStatRemoved;
-            }
+            _characterStatsPresenter.OnStatAdded += OnStatAdded;
+            _characterStatsPresenter.OnStatRemoved += OnStatRemoved;
         }
 
         private void Subscribe()

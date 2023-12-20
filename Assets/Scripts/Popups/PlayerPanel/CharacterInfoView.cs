@@ -18,15 +18,8 @@ namespace Popups.PlayerPanel
 
         private ICharacterInfoPresenter _characterInfoPresenter;
 
-        private void OnDestroy()
-        {
-            Unsubscribe();
-        }
-
         public void Initialize(ICharacterInfoPresenter presenter)
         {
-            Unsubscribe();
-
             _characterInfoPresenter = presenter;
 
             UpdateIcon(_characterInfoPresenter.Icon);
@@ -36,17 +29,17 @@ namespace Popups.PlayerPanel
             Subscribe();
         }
 
+        public void ReleasePresenters()
+        {
+            Unsubscribe();
+            _characterInfoPresenter.Dispose();
+        }
+
         private void Unsubscribe()
         {
-            //Не нравится проверка на null. Знаю, что можно в UniRx через CompositeDisposable это решить
-            //Но интересно, а как по-хорошему делают без UniRx такие отписки?
-            //Или вообще не отписываются? Так как презентер одноразовый и каждый раз новый инстанс создается
-            if (_characterInfoPresenter != null)
-            {
-                _characterInfoPresenter.OnIconChanged -= UpdateIcon;
-                _characterInfoPresenter.OnNameChanged -= UpdateName;
-                _characterInfoPresenter.OnDescriptionChanged -= UpdateDescription;
-            }
+            _characterInfoPresenter.OnIconChanged -= UpdateIcon;
+            _characterInfoPresenter.OnNameChanged -= UpdateName;
+            _characterInfoPresenter.OnDescriptionChanged -= UpdateDescription;
         }
 
         private void Subscribe()

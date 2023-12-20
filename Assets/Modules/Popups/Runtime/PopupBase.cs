@@ -4,17 +4,12 @@ using UnityEngine;
 namespace PresentationModel.Popups
 {
     [RequireComponent(typeof(CanvasGroup))]
-    public partial class PopupBase : MonoBehaviour
+    public class PopupBase : MonoBehaviour
     {
-        public event Action OpenStarted;
-        public event Action OpenFinished;
-        public event Action CloseStarted;
-        public event Action CloseFinished;
-
         [Header("References")]
         [SerializeField]
         private CanvasGroup _canvasGroup;
-        
+
         [SerializeField]
         private PopupAnimationBase _animation;
 
@@ -28,19 +23,12 @@ namespace PresentationModel.Popups
 
         public bool IsOpened { get; private set; }
 
-        protected virtual void OnDestroy()
-        {
-            ClearEventHandlers();
-        }
-
         internal void Open(Action onComplete, bool skipAnimation)
         {
             SetActive(true);
             SetBlocksRaycasts(false);
             
             IsOpened = true;
-            OnOpenStarted();
-            OpenStarted?.Invoke();
 
             if (skipAnimation)
             {
@@ -54,8 +42,6 @@ namespace PresentationModel.Popups
             void OpenFinishedLocal()
             {
                 SetBlocksRaycasts(true);
-                OnOpenFinished();
-                OpenFinished?.Invoke();
                 onComplete?.Invoke();
             }
         }
@@ -65,8 +51,6 @@ namespace PresentationModel.Popups
             SetBlocksRaycasts(false);
             
             IsOpened = false;
-            OnCloseStarted();
-            CloseStarted?.Invoke();
 
             if (skipAnimation)
             {
@@ -79,14 +63,7 @@ namespace PresentationModel.Popups
 
             void CloseFinishedLocal()
             {
-                OnCloseFinished();
-                CloseFinished?.Invoke();
                 onComplete?.Invoke();
-
-                if (IsCached)
-                {
-                    ClearEventHandlers();
-                }
                 
                 SetActive(false);
             }
@@ -97,29 +74,9 @@ namespace PresentationModel.Popups
             _animation.InterruptCurrentAnimation();
         }
 
-        protected void Close()
+        protected virtual void Close()
         {
             CloseAction?.Invoke();
-        }
-        
-        protected virtual void OnOpenStarted()
-        {
-            
-        }
-        
-        protected virtual void OnOpenFinished()
-        {
-            
-        }
-        
-        protected virtual void OnCloseStarted()
-        {
-            
-        }
-        
-        protected virtual void OnCloseFinished()
-        {
-            
         }
         
         private void SetActive(bool isActive)
@@ -130,14 +87,6 @@ namespace PresentationModel.Popups
         private void SetBlocksRaycasts(bool isBlocking)
         {
             _canvasGroup.blocksRaycasts = isBlocking;
-        }
-
-        private void ClearEventHandlers()
-        {
-            OpenStarted = null;
-            OpenFinished = null;
-            CloseStarted = null;
-            CloseFinished = null;
         }
     }
 }

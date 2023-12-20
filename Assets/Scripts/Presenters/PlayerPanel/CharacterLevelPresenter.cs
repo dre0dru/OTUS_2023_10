@@ -5,14 +5,15 @@ namespace Presenters.PlayerPanel
 {
     public class CharacterLevelPresenter : ICharacterLevelPresenter
     {
-        public event Action<int> OnExperienceChanged;
+        public event Action OnExperienceChanged;
         public event Action OnLevelUp;
 
         private readonly PlayerLevel _playerLevel;
 
-        public int CurrentLevel => _playerLevel.CurrentLevel;
-        public int CurrentExperience => _playerLevel.CurrentExperience;
-        public int RequiredExperience => _playerLevel.RequiredExperience;
+        public string CurrentLevelText => $"Level: {_playerLevel.CurrentLevel.ToString()}";
+        public string LevelProgressText =>
+            $"XP: {_playerLevel.CurrentExperience.ToString()} / {_playerLevel.RequiredExperience.ToString()}";
+        public float LevelProgress => (float)_playerLevel.CurrentExperience / _playerLevel.RequiredExperience;
         public bool CanLevelUp => _playerLevel.CanLevelUp();
 
         public CharacterLevelPresenter(PlayerLevel playerLevel)
@@ -23,7 +24,7 @@ namespace Presenters.PlayerPanel
             _playerLevel.OnLevelUp += InvokeOnLevelUp;
         }
 
-        ~CharacterLevelPresenter()
+        public void Dispose()
         {
             _playerLevel.OnExperienceChanged -= InvokeOnExperienceChanged;
             _playerLevel.OnLevelUp -= InvokeOnLevelUp;
@@ -36,7 +37,7 @@ namespace Presenters.PlayerPanel
 
         private void InvokeOnExperienceChanged(int currentExp)
         {
-            OnExperienceChanged?.Invoke(currentExp);
+            OnExperienceChanged?.Invoke();
         }
 
         private void InvokeOnLevelUp()

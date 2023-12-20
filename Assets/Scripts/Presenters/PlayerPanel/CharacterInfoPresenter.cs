@@ -25,7 +25,7 @@ namespace Presenters.PlayerPanel
             _userInfo.OnIconChanged += InvokeOnIconChanged;
         }
 
-        ~CharacterInfoPresenter()
+        public void Dispose()
         {
             _userInfo.OnNameChanged -= InvokeOnNameChanged;
             _userInfo.OnDescriptionChanged -= InvokeOnDescriptionChanged;

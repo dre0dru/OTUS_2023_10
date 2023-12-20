@@ -47,7 +47,11 @@ namespace HomeworkHelpers
 
         private void ShowPopup(string characterName)
         {
-            if (!_popupsController.TryGetOpenedPopup<PlayerPanelPopup>(out var popup))
+            if (_popupsController.TryGetOpenedPopup<PlayerPanelPopup>(out var popup))
+            {
+                popup.ReleasePresenters();
+            }
+            else
             {
                 popup = _popupsController.Open<PlayerPanelPopup>(false);
             }

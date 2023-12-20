@@ -1,4 +1,6 @@
-﻿namespace Presenters.PlayerPanel
+﻿using System;
+
+namespace Presenters.PlayerPanel
 {
     public interface IPlayerPanelPresenter
     {

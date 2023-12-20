@@ -2,14 +2,14 @@
 
 namespace Presenters.PlayerPanel
 {
-    public interface ICharacterLevelPresenter
+    public interface ICharacterLevelPresenter : IDisposable
     {
-        event Action<int> OnExperienceChanged;
+        event Action OnExperienceChanged;
         event Action OnLevelUp;
 
-        int CurrentLevel { get; }
-        int CurrentExperience { get; }
-        int RequiredExperience { get; }
+        string CurrentLevelText { get; }
+        string LevelProgressText { get; }
+        float LevelProgress { get; }
         bool CanLevelUp { get; }
 
         public void LevelUp();

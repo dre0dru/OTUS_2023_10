@@ -1,5 +1,4 @@
-﻿using System;
-using Presenters.PlayerPanel;
+﻿using Presenters.PlayerPanel;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -35,29 +34,28 @@ namespace Popups.PlayerPanel
         private void OnDestroy()
         {
             _levelUpButton.onClick.RemoveListener(LevelUp);
-
-            Unsubscribe();
         }
 
         public void Initialize(ICharacterLevelPresenter presenter)
         {
-            Unsubscribe();
-
             _characterLevelPresenter = presenter;
 
-            UpdateLevel();
-            UpdateLevelProgress(_characterLevelPresenter.CurrentExperience);
+            UpdateLevelText();
+            UpdateLevelProgress();
 
             Subscribe();
         }
 
+        public void ReleasePresenters()
+        {
+            Unsubscribe();
+            _characterLevelPresenter.Dispose();
+        }
+
         private void Unsubscribe()
         {
-            if (_characterLevelPresenter != null)
-            {
-                _characterLevelPresenter.OnExperienceChanged += UpdateLevelProgress;
-                _characterLevelPresenter.OnLevelUp += OnLevelUp;
-            }
+            _characterLevelPresenter.OnExperienceChanged += UpdateLevelProgress;
+            _characterLevelPresenter.OnLevelUp += OnLevelUp;
         }
 
         private void Subscribe()
@@ -68,21 +66,20 @@ namespace Popups.PlayerPanel
 
         private void OnLevelUp()
         {
-            UpdateLevel();
+            UpdateLevelText();
             UpdateLevelButtonState();
         }
 
-        private void UpdateLevel()
+        private void UpdateLevelText()
         {
-            _levelText.text = $"Level: {_characterLevelPresenter.CurrentLevel.ToString()}";
+            _levelText.text = _characterLevelPresenter.CurrentLevelText;
         }
 
-        private void UpdateLevelProgress(int currentExp)
+        private void UpdateLevelProgress()
         {
-            _levelProgressText.text =
-                $"XP: {currentExp.ToString()} / {_characterLevelPresenter.RequiredExperience.ToString()}";
+            _levelProgressText.text = _characterLevelPresenter.LevelProgressText;
 
-            _levelProgressBar.fillAmount = (float)currentExp / _characterLevelPresenter.RequiredExperience;
+            _levelProgressBar.fillAmount = _characterLevelPresenter.LevelProgress;
             _levelProgressBar.sprite = _characterLevelPresenter.CanLevelUp ? _canLevelUpBarImage : _levelledUpBarImage;
 
             UpdateLevelButtonState();

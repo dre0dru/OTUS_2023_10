@@ -24,7 +24,7 @@ namespace Presenters.PlayerPanel
             CreatePresenters();
         }
 
-        ~CharacterStatsPresenter()
+        public void Dispose()
         {
             _characterInfo.OnStatAdded -= CreatePresenter;
             _characterInfo.OnStatRemoved -= RemovePresenter;
@@ -51,6 +51,7 @@ namespace Presenters.PlayerPanel
             if (_presenters.Remove(characterStat, out var presenter))
             {
                 OnStatRemoved?.Invoke(presenter);
+                presenter.Dispose();
             }
         }
     }

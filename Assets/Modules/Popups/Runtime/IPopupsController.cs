@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace PresentationModel.Popups
+﻿namespace PresentationModel.Popups
 {
     public interface IPopupsController<TPopupBase>
     {

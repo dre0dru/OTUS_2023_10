@@ -2,12 +2,10 @@
 
 namespace Presenters.PlayerPanel
 {
-    public interface ICharacterStatPresenter
+    public interface ICharacterStatPresenter : IDisposable
     {
-        event Action<int> OnValueChanged;
+        event Action OnValueChanged;
 
-        string Name { get; }
-
-        int Value { get; }
+        string ValueText { get; }
     }
 }

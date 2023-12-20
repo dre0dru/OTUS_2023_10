@@ -24,10 +24,10 @@ namespace Popups.PlayerPanel
             _closeButton.onClick.AddListener(Close);
         }
 
-        protected override void OnDestroy()
+        private void OnDestroy()
         {
-            base.OnDestroy();
             _closeButton.onClick.RemoveListener(Close);
+            ReleasePresenters();
         }
 
         public void SetPresenter(IPlayerPanelPresenter presenter)
@@ -35,6 +35,20 @@ namespace Popups.PlayerPanel
             _characterInfoView.Initialize(presenter.CharacterInfoPresenter);
             _characterLevelView.Initialize(presenter.CharacterLevelPresenter);
             _characterStatsView.Initialize(presenter.CharacterStatsPresenter);
+        }
+
+        public void ReleasePresenters()
+        {
+            _characterInfoView.ReleasePresenters();
+            _characterLevelView.ReleasePresenters();
+            _characterStatsView.ReleasePresenters();
+        }
+
+        protected override void Close()
+        {
+            base.Close();
+
+            ReleasePresenters();
         }
     }
 }

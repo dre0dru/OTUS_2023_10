@@ -5,12 +5,11 @@ namespace Presenters.PlayerPanel
 {
     public class CharacterStatPresenter : ICharacterStatPresenter, IEquatable<CharacterStatPresenter>
     {
-        public event Action<int> OnValueChanged;
+        public event Action OnValueChanged;
 
         private readonly CharacterStat _characterStat;
 
-        public string Name => _characterStat.Name;
-        public int Value => _characterStat.Value;
+        public string ValueText => $"{_characterStat.Name}: {_characterStat.Value.ToString()}";
 
         public CharacterStatPresenter(CharacterStat characterStat)
         {
@@ -19,14 +18,14 @@ namespace Presenters.PlayerPanel
             _characterStat.OnValueChanged += InvokeOnValueChanged;
         }
 
-        ~CharacterStatPresenter()
+        public void Dispose()
         {
             _characterStat.OnValueChanged -= InvokeOnValueChanged;
         }
 
         private void InvokeOnValueChanged(int statValue)
         {
-            OnValueChanged?.Invoke(statValue);
+            OnValueChanged?.Invoke();
         }
 
         public bool Equals(CharacterStatPresenter other)
