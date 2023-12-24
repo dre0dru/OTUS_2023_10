@@ -29,21 +29,21 @@ MonoBehaviour:
     referenceMode: 2
     serializationDepthLimit: 64
     assemblyNames:
-    - Purchasing.Common
-    - GameEngine
-    - Sirenix.OdinInspector.CompatibilityLayer
     - VContainer
-    - VContainer.Tests
-    - VContainer.EnableCodeGen
     - ES3
-    - Assembly-CSharp-firstpass
-    - DI
-    - Assembly-CSharp
+    - VContainer.Tests
+    - Purchasing.Common
+    - Sirenix.OdinInspector.CompatibilityLayer
     - SaveSystem
+    - DI
+    - GameEngine
+    - VContainer.EnableCodeGen
+    - Assembly-CSharp-firstpass
+    - Assembly-CSharp
     - Sirenix.OdinInspector.CompatibilityLayer.Editor
+    - VContainer.Editor
     - Analytics
     - Sirenix.OdinInspector.Modules.UnityMathematics
-    - VContainer.Editor
     showAdvancedSettings: 1
   addMgrToSceneAutomatically: 0
   autoUpdateReferences: 1
