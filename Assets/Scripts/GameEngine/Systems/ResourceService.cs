@@ -12,6 +12,11 @@ namespace GameEngine
         [ShowInInspector, ReadOnly]
         private Dictionary<string, Resource> sceneResources = new();
 
+        public ResourceService(IEnumerable<Resource> resources)
+        {
+            SetResources(resources);
+        }
+
         public void SetResources(IEnumerable<Resource> resources)
         {
             this.sceneResources = resources.ToDictionary(it => it.ID);

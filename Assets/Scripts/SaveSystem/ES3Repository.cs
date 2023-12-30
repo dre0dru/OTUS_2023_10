@@ -1,14 +1,14 @@
 ﻿namespace SaveSystem
 {
-    public class ES3Repository<TData> : IRepository<TData>
+    public class ES3Repository : IRepository
     {
-        private string Key => typeof(TData).FullName;
-
-        public bool TryGetData(out TData data)
+        public bool TryGetData<TData>(out TData data)
         {
-            if (ES3.KeyExists(Key))
+            var key = GetKey<TData>();
+
+            if (ES3.KeyExists(key))
             {
-                 data = ES3.Load<TData>(Key);
+                 data = ES3.Load<TData>(key);
                  return true;
             }
 
@@ -16,9 +16,17 @@
             return false;
         }
 
-        public void SetData(TData data)
+        public void SetData<TData>(TData data)
         {
-            ES3.Save(Key, data);
+            var key = GetKey<TData>();
+
+            ES3.Save(key, data);
+        }
+
+        private static string GetKey<TData>()
+        {
+            var key = typeof(TData).FullName;
+            return key;
         }
     }
 }

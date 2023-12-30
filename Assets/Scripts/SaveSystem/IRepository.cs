@@ -1,8 +1,8 @@
 ﻿namespace SaveSystem
 {
-    public interface IRepository<TData>
+    public interface IRepository
     {
-        bool TryGetData(out TData data);
-        void SetData(TData data);
+        bool TryGetData<TData>(out TData data);
+        void SetData<TData>(TData data);
     }
 }

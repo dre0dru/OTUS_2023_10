@@ -5,9 +5,9 @@ namespace SaveSystem
     public abstract class RepositorySaveLoader<TData, TService> : ISaveLoader
     {
         private readonly TService _service;
-        private readonly IRepository<TData> _repository;
+        private readonly IRepository _repository;
 
-        protected RepositorySaveLoader(TService service, IRepository<TData> repository)
+        protected RepositorySaveLoader(TService service, IRepository repository)
         {
             _service = service;
             _repository = repository;
@@ -21,7 +21,7 @@ namespace SaveSystem
 
         public void Load()
         {
-            if (_repository.TryGetData(out var data))
+            if (_repository.TryGetData<TData>(out var data))
             {
                 Debug.Log($"Loading data for: {GetType()}");
                 RestoreFromData(_service, data);
@@ -35,6 +35,6 @@ namespace SaveSystem
 
         protected abstract TData ExtractData(TService service);
         protected abstract void RestoreFromData(TService service, TData data);
-        protected abstract void SetupDefaultData(TService service);
+        protected virtual void SetupDefaultData(TService service){}
     }
 }

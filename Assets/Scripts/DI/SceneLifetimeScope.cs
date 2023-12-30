@@ -17,13 +17,34 @@ namespace DI
         protected override void Configure(IContainerBuilder builder)
         {
             builder.Register<UnitManager>(Lifetime.Singleton).WithParameter(_unitsContainer);
-            builder.Register<ResourceService>(Lifetime.Singleton);
+            builder.Register<UnitsFacade>(Lifetime.Singleton).WithParameter(_unitPrefabs);
 
-            builder.Register<IRepository<ResourceSaveLoader.Data>, ES3Repository<ResourceSaveLoader.Data>>(Lifetime.Singleton);
-            builder.Register<IRepository<UnitSaveLoader.Data>, ES3Repository<UnitSaveLoader.Data>>(Lifetime.Singleton);
+            builder.Register<ResourceService>(Lifetime.Singleton).WithParameter(GetResourcesInScene());
+
+            builder.Register<IRepository, ES3Repository>(Lifetime.Singleton);
 
             builder.Register<ISaveLoader, ResourceSaveLoader>(Lifetime.Singleton);
-            builder.Register<ISaveLoader, UnitSaveLoader>(Lifetime.Singleton).WithParameter(_unitPrefabs);
+            builder.Register<ISaveLoader, UnitSaveLoader>(Lifetime.Singleton);
+
+            builder.RegisterBuildCallback(SetupDefaultUnits);
+        }
+
+        //Конструктор у UnitManager менять нельзя, поэтому сетап дефолтных юнитов со сцены идет отдельно
+        //В идеале через конструктор, как сделали у ResourceService, либо как шаг инициализации игры, если бы у нас
+        //был некий Loader
+        private void SetupDefaultUnits(IObjectResolver container)
+        {
+            container.Resolve<UnitManager>().SetupUnits(GetUnitsInScene());
+        }
+
+        private Resource[] GetResourcesInScene()
+        {
+            return Object.FindObjectsOfType<Resource>();
+        }
+
+        private Unit[] GetUnitsInScene()
+        {
+            return Object.FindObjectsOfType<Unit>(true);
         }
     }
 }
