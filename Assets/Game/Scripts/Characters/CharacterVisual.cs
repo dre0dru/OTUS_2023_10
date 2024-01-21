@@ -12,14 +12,20 @@ namespace Game.Scripts.Characters
         [SerializeField]
         private AnimationComponent _animationComponent;
 
+        [Section]
+        [SerializeField]
+        private CharacterFxComponent _characterFxComponent;
+
         public void Compose(IAtomicObject atomicObject)
         {
             _animationComponent.Compose(atomicObject);
+            _characterFxComponent.Compose(atomicObject);
         }
 
         public void OnEnable()
         {
             _animationComponent.OnEnable();
+            _characterFxComponent.OnEnable();
         }
 
         public void Update()
@@ -30,6 +36,7 @@ namespace Game.Scripts.Characters
         public void OnDisable()
         {
             _animationComponent.OnDisable();
+            _characterFxComponent.OnDisable();
         }
     }
 }

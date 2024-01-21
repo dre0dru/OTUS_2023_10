@@ -2,6 +2,7 @@
 using Atomic.Elements;
 using Atomic.Objects;
 using Atomics.Extensions;
+using Game.Scripts.Animations;
 using UnityEngine;
 
 namespace Game.Scripts.Components
@@ -20,7 +21,7 @@ namespace Game.Scripts.Components
         private Animator _animator;
 
         [SerializeField]
-        private AnimatorDispatcher _animatorDispatcher;
+        private AnimatorAttackDispatcher _animatorAttackDispatcher;
 
         private IAtomicValue<Vector3> _moveDirection;
         private IAtomicValue<bool> _isDead;
@@ -31,7 +32,7 @@ namespace Game.Scripts.Components
             _moveDirection = atomicObject.GetValue<Vector3>(ObjectAPI.MovementDirection);
             _isDead = atomicObject.GetValue<bool>(ObjectAPI.IsDead);
             _attackRequest = atomicObject.GetObservable(ObjectAPI.AttackRequest);
-            _animatorDispatcher.Compose(atomicObject);
+            _animatorAttackDispatcher.Compose(atomicObject);
         }
 
         public void OnEnable()

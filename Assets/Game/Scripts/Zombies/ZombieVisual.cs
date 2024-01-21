@@ -12,14 +12,20 @@ namespace Game.Scripts.Zombies
         [SerializeField]
         private AnimationComponent _animationComponent;
 
+        [Section]
+        [SerializeField]
+        private ZombieFxComponent _zombieFxComponent;
+
         public void Compose(IAtomicObject atomicObject)
         {
             _animationComponent.Compose(atomicObject);
+            _zombieFxComponent.Compose(atomicObject);
         }
 
         public void OnEnable()
         {
             _animationComponent.OnEnable();
+            _zombieFxComponent.OnEnable();
         }
 
         public void Update()
@@ -30,6 +36,7 @@ namespace Game.Scripts.Zombies
         public void OnDisable()
         {
             _animationComponent.OnDisable();
+            _zombieFxComponent.OnDisable();
         }
     }
 }

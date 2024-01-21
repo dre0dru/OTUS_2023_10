@@ -9,6 +9,7 @@ namespace Game.Scripts.Components
     [Serializable]
     public class HealthComponent
     {
+        [Get(ObjectAPI.Health)]
         [SerializeField]
         private AtomicVariable<int> _health;
 
@@ -16,12 +17,13 @@ namespace Game.Scripts.Components
         [SerializeField]
         private AtomicVariable<bool> _isDead;
 
+        [Get(ObjectAPI.DeathEvent)]
         [SerializeField]
         private AtomicEvent _deathEvent;
 
         [Get(ObjectAPI.TakeDamage)]
         [SerializeField]
-        private AtomicEvent<int> _takeDamageEvent;
+        private AtomicEvent<int> _takeDamageEvent = new();
 
         private DeathMechanics _deathMechanics;
         private TakeDamageMechanics _takeDamageMechanics;

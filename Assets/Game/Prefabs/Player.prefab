@@ -143,7 +143,10 @@ MonoBehaviour:
   _characterVisual:
     _animationComponent:
       _animator: {fileID: 3435628029611942440}
-      _animatorDispatcher: {fileID: 3420163433904952455}
+      _animatorAttackDispatcher: {fileID: 3420163433904952455}
+    _characterFxComponent:
+      _shootFx: {fileID: 922185958035770484}
+      _hitFx: {fileID: 1977376666174438541}
 --- !u!1 &8550233314304206884
 GameObject:
   m_ObjectHideFlags: 0
@@ -269,6 +272,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b840149de5449b548821bfc78aa833ea, type: 3}
+--- !u!198 &922185958035770484 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 19801142, guid: b840149de5449b548821bfc78aa833ea, type: 3}
+  m_PrefabInstance: {fileID: 922185958021752898}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1977376666189032451
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -438,6 +446,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9bf0b90e6d2294a4c8186ac5febf7653, type: 3}
+--- !u!198 &1977376666174438541 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 19845262, guid: 9bf0b90e6d2294a4c8186ac5febf7653, type: 3}
+  m_PrefabInstance: {fileID: 1977376666189032451}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1977376666188540523 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 493160, guid: 9bf0b90e6d2294a4c8186ac5febf7653, type: 3}

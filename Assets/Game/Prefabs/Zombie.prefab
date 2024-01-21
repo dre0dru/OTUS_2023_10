@@ -167,7 +167,9 @@ MonoBehaviour:
   _zombieVisual:
     _animationComponent:
       _animator: {fileID: 4828065441531083015}
-      _animatorDispatcher: {fileID: 197752548}
+      _animatorAttackDispatcher: {fileID: 197752548}
+    _zombieFxComponent:
+      _hitFx: {fileID: 1696610920232104273}
   _zombieAgent:
     _target:
       _value: {fileID: 0}
@@ -267,6 +269,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9bf0b90e6d2294a4c8186ac5febf7653, type: 3}
+--- !u!198 &1696610920232104273 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 19845262, guid: 9bf0b90e6d2294a4c8186ac5febf7653, type: 3}
+  m_PrefabInstance: {fileID: 1696610920246370783}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1696610920246208439 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 493160, guid: 9bf0b90e6d2294a4c8186ac5febf7653, type: 3}

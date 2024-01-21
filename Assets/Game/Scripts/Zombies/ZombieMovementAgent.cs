@@ -18,7 +18,7 @@ namespace Game.Scripts.Zombies
         public void Compose(IAtomicObject atomicObject)
         {
             _moveTowardsTargetMechanics = new MoveTowardsTargetMechanics(atomicObject.Get<Transform>(ObjectAPI.Root),
-                atomicObject.GetVariable<AtomicObjectComponent>(ObjectAPI.Target).Value.transform.AsValue(),
+                atomicObject.GetVariable<AtomicObjectComponent>(ObjectAPI.Target),
                 _stoppingDistance, atomicObject.GetAction(ObjectAPI.AttackRequest),
                 atomicObject.GetVariable<Vector3>(ObjectAPI.MovementDirection));
         }

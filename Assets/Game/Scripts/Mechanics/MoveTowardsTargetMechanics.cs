@@ -1,4 +1,5 @@
 ﻿using Atomic.Elements;
+using Atomic.Objects;
 using UnityEngine;
 
 namespace Game.Scripts.Mechanics
@@ -6,12 +7,12 @@ namespace Game.Scripts.Mechanics
     public class MoveTowardsTargetMechanics
     {
         private readonly Transform _root;
-        private readonly IAtomicValue<Transform> _target;
+        private readonly IAtomicValue<AtomicObjectComponent> _target;
         private readonly IAtomicValue<float> _stoppingDistance;
         private readonly IAtomicAction _targetReachedEvent;
         private readonly IAtomicVariable<Vector3> _movementDirection;
 
-        public MoveTowardsTargetMechanics(Transform root, IAtomicValue<Transform> target,
+        public MoveTowardsTargetMechanics(Transform root, IAtomicValue<AtomicObjectComponent> target,
             IAtomicValue<float> stoppingDistance,
             IAtomicAction targetReachedEvent, IAtomicVariable<Vector3> movementDirection)
         {
@@ -29,7 +30,7 @@ namespace Game.Scripts.Mechanics
                 return;
             }
 
-            var direction = _target.Value.position - _root.position;
+            var direction = _target.Value.transform.position - _root.position;
             var distance = direction.magnitude;
 
             if (distance <= _stoppingDistance.Value)

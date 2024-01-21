@@ -12,5 +12,9 @@
         public const string AttackEvent = nameof(AttackEvent);
         public const string CanShoot = nameof(CanShoot);
         public const string Target = nameof(Target);
+        public const string DeathEvent = nameof(DeathEvent);
+        public const string Health = nameof(Health);
+        public const string AmmoCount = nameof(AmmoCount);
+        public const string MaxAmmoCount = nameof(MaxAmmoCount);
     }
 }

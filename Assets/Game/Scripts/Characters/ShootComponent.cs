@@ -33,10 +33,12 @@ namespace Game.Scripts.Components
         [SerializeField]
         private AtomicVariable<float> _shotTimer;
 
+        [Get(ObjectAPI.AmmoCount)]
         [Header("Ammo")]
         [SerializeField]
         private AtomicVariable<int> _ammoCount;
 
+        [Get(ObjectAPI.MaxAmmoCount)]
         [SerializeField]
         private AtomicVariable<int> _maxAmmoCount;
 
